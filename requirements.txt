@@ -1,0 +1,76 @@
+# =========================
+# CORE AI FRAMEWORKS
+# =========================
+langchain
+langchain-core
+langchain-community
+langchain-google-genai
+langgraph
+langsmith
+
+# =========================
+# MULTI AGENT FRAMEWORK
+# =========================
+crewai
+crewai-tools
+
+# =========================
+# GOOGLE GEMINI
+# =========================
+google-generativeai
+
+# =========================
+# VECTOR DATABASE / RAG
+# =========================
+chromadb
+faiss-cpu
+sentence-transformers
+
+# =========================
+# DOCUMENT PROCESSING
+# =========================
+pypdf
+pdfplumber
+python-docx
+unstructured
+
+# =========================
+# WEB SEARCH + SCRAPING
+# =========================
+tavily-python
+beautifulsoup4
+requests
+lxml
+
+# =========================
+# MEMORY & DATA
+# =========================
+numpy
+pandas
+
+# =========================
+# ASYNC + HTTP
+# =========================
+aiohttp
+httpx
+
+# =========================
+# ENVIRONMENT VARIABLES
+# =========================
+python-dotenv
+
+# =========================
+# LOGGING
+# =========================
+loguru
+
+# =========================
+# TESTING
+# =========================
+pytest
+
+# =========================
+# OPTIONAL UTILITIES
+# =========================
+black
+isort
