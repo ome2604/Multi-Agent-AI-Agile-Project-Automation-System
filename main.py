@@ -1,15 +1,15 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
-from orchestrator.config import *
-from monitoring.logging_config import logger
+from orchestrator.workflow_manager import WorkflowManager
 
-logger.info("Starting Enterprise Multi-Agent AI System")
+workflow = WorkflowManager()
 
-llm = ChatGoogleGenerativeAI(
-    model=MODEL_NAME,
-    google_api_key=GOOGLE_API_KEY,
-    temperature=TEMPERATURE
+result = workflow.execute_workflow(
+    "Build an AI-powered ecommerce platform"
 )
 
-response = llm.invoke("Hello, introduce yourself.")
+print("\n===== FINAL MULTI-AGENT OUTPUT =====\n")
 
-print(response.content)
+for key, value in result.items():
+
+    print(f"\n===== {key.upper()} =====\n")
+
+    print(value)
