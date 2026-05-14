@@ -74,3 +74,6 @@ pytest
 # =========================
 black
 isort
+
+huggingface_hub==0.16.4
+sentence-transformers==2.2.2
