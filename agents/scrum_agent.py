@@ -6,7 +6,7 @@ class ScrumAgent(BaseAgent):
 
         super().__init__("Scrum Assistant Agent")
 
-    def generate_scrum_summary(self, sprint_context):
+    def generate_standup(self, sprint_context):
 
         prompt = f"""
 
