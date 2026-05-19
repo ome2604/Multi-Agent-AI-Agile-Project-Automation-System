@@ -1,0 +1,529 @@
+2026-05-19 17:36:07.296 | ERROR    | agents.base_agent:invoke:110 - Planning Agent unexpected error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\tests\test_advanced_workflow.py", line 5, in <module>
+    result = workflow.execute_workflow(
+             │        └ <function WorkflowManager.execute_workflow at 0x0000017DD6904CC0>
+             └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 52, in execute_workflow
+    plan = self.safe_agent_execution(
+           │    └ <function WorkflowManager.safe_agent_execution at 0x0000017DD6904F40>
+           └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 149, in safe_agent_execution
+    return agent_method(*args)
+           │             └ ('Build an AI-powered ecommerce platform', '')
+           └ <bound method PlanningAgent.generate_plan of <agents.planning_agent.PlanningAgent object at 0x0000017DD6675890>>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\planning_agent.py", line 46, in generate_plan
+    return self.invoke(
+           │    └ <function BaseAgent.invoke at 0x0000017DB06B5B20>
+           └ <agents.planning_agent.PlanningAgent object at 0x0000017DD6675890>
+
+> File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\base_agent.py", line 53, in invoke
+    response = future.result(timeout=60)
+               │      └ <function Future.result at 0x0000017D93FCFB00>
+               └ <Future at 0x17dd828d410 state=finished raised AuthenticationError>
+
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+          └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             │        │            └ None
+             │        └ None
+             └ None
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 474, in invoke
+    self.generate_prompt(
+    │    └ <function BaseChatModel.generate_prompt at 0x0000017DB040AE80>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           │    │        │                     │               │            └ {'tags': [], 'metadata': {}, 'run_name': None, 'run_id': None}
+           │    │        │                     │               └ None
+           │    │        │                     └ None
+           │    │        └ [[HumanMessage(content='\n        Context:\n        \n\n        User Request:\n        \n\n        You are an enterprise Agil...
+           │    └ <function BaseChatModel.generate at 0x0000017DB040AD40>
+           └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+    │    └ <function BaseChatModel._generate_with_cache at 0x0000017DB040AFC0>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+             │    └ <function BaseChatOpenAI._generate at 0x0000017DB04B7240>
+             └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1655, in _generate
+    _handle_openai_api_error(e)
+    └ <function _handle_openai_api_error at 0x0000017DB04B63E0>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1650, in _generate
+    raw_response = self.client.with_raw_response.create(**payload)
+                   │    │      │                 │        └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': '\n    ...
+                   │    │      │                 └ <function Completions.create at 0x0000017DD8810720>
+                   │    │      └ <openai.resources.chat.completions.completions.CompletionsWithRawResponse object at 0x0000017DD8451C90>
+                   │    └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD6331050>
+                   └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_legacy_response.py", line 367, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+           │    │                 │   │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': '\n    ...
+           │    │                 │   │     └ ()
+           │    │                 │   └ <bound method Completions.create of <openai.resources.chat.completions.completions.Completions object at 0x0000017DD6331050>>
+           │    │                 └ ~R
+           │    └ <class 'openai._legacy_response.LegacyAPIResponse'>
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': '\n    ...
+           │     └ (<openai.resources.chat.completions.completions.Completions object at 0x0000017DD6331050>,)
+           └ <function Completions.create at 0x0000017DD7A9F560>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1215, in create
+    return self._post(
+           │    └ <bound method SyncAPIClient.post of <openai.OpenAI object at 0x0000017DD69943D0>>
+           └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD6331050>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+           │    │          │    │       │        │            │                  └ openai.Stream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+           │    │          │    │       │        │            └ False
+           │    │          │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers={'X-Stainless-Raw-Response': 'true'}, max_retr...
+           │    │          │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+           │    │          │    └ <function SyncAPIClient.request at 0x0000017D97B2F420>
+           │    │          └ <openai.OpenAI object at 0x0000017DD69943D0>
+           │    └ ~ResponseT
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1105, in request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x0000017D97B2D940>
+          └ <openai.OpenAI object at 0x0000017DD69943D0>
+
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2026-05-19 17:36:07.719 | ERROR    | agents.base_agent:invoke:110 - Risk Analysis Agent unexpected error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\tests\test_advanced_workflow.py", line 5, in <module>
+    result = workflow.execute_workflow(
+             │        └ <function WorkflowManager.execute_workflow at 0x0000017DD6904CC0>
+             └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 58, in execute_workflow
+    risks = self.safe_agent_execution(
+            │    └ <function WorkflowManager.safe_agent_execution at 0x0000017DD6904F40>
+            └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 149, in safe_agent_execution
+    return agent_method(*args)
+           │             └ ("\n        Planning Agent could not complete execution.\n\n        Reason:\n        Error code: 401 - {'error': {'message': ...
+           └ <bound method RiskAgent.analyze_risks of <agents.risk_agent.RiskAgent object at 0x0000017DD81DE650>>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\risk_agent.py", line 32, in analyze_risks
+    return self.invoke(prompt)
+           │    │      └ "\n\n        You are an enterprise Risk Analysis Agent.\n\n        Analyze:\n        - blockers\n        - sprint risks\n    ...
+           │    └ <function BaseAgent.invoke at 0x0000017DB06B5B20>
+           └ <agents.risk_agent.RiskAgent object at 0x0000017DD81DE650>
+
+> File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\base_agent.py", line 53, in invoke
+    response = future.result(timeout=60)
+               │      └ <function Future.result at 0x0000017D93FCFB00>
+               └ <Future at 0x17dda041190 state=finished raised AuthenticationError>
+
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+          └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             │        │            └ None
+             │        └ None
+             └ None
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 474, in invoke
+    self.generate_prompt(
+    │    └ <function BaseChatModel.generate_prompt at 0x0000017DB040AE80>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           │    │        │                     │               │            └ {'tags': [], 'metadata': {}, 'run_name': None, 'run_id': None}
+           │    │        │                     │               └ None
+           │    │        │                     └ None
+           │    │        └ [[HumanMessage(content="\n        Context:\n        \n\n        User Request:\n        \n\n        You are an enterprise Risk...
+           │    └ <function BaseChatModel.generate at 0x0000017DB040AD40>
+           └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+    │    └ <function BaseChatModel._generate_with_cache at 0x0000017DB040AFC0>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+             │    └ <function BaseChatOpenAI._generate at 0x0000017DB04B7240>
+             └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1655, in _generate
+    _handle_openai_api_error(e)
+    └ <function _handle_openai_api_error at 0x0000017DB04B63E0>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1650, in _generate
+    raw_response = self.client.with_raw_response.create(**payload)
+                   │    │      │                 │        └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+                   │    │      │                 └ <function Completions.create at 0x0000017DDA00ECA0>
+                   │    │      └ <openai.resources.chat.completions.completions.CompletionsWithRawResponse object at 0x0000017DD828CA10>
+                   │    └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DEC90>
+                   └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_legacy_response.py", line 367, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+           │    │                 │   │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │    │                 │   │     └ ()
+           │    │                 │   └ <bound method Completions.create of <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DEC90>>
+           │    │                 └ ~R
+           │    └ <class 'openai._legacy_response.LegacyAPIResponse'>
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │     └ (<openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DEC90>,)
+           └ <function Completions.create at 0x0000017DD7A9F560>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1215, in create
+    return self._post(
+           │    └ <bound method SyncAPIClient.post of <openai.OpenAI object at 0x0000017DD81DE950>>
+           └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DEC90>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+           │    │          │    │       │        │            │                  └ openai.Stream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+           │    │          │    │       │        │            └ False
+           │    │          │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers={'X-Stainless-Raw-Response': 'true'}, max_retr...
+           │    │          │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+           │    │          │    └ <function SyncAPIClient.request at 0x0000017D97B2F420>
+           │    │          └ <openai.OpenAI object at 0x0000017DD81DE950>
+           │    └ ~ResponseT
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1105, in request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x0000017D97B2D940>
+          └ <openai.OpenAI object at 0x0000017DD81DE950>
+
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2026-05-19 17:36:08.099 | ERROR    | agents.base_agent:invoke:110 - Resource Allocation Agent unexpected error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\tests\test_advanced_workflow.py", line 5, in <module>
+    result = workflow.execute_workflow(
+             │        └ <function WorkflowManager.execute_workflow at 0x0000017DD6904CC0>
+             └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 63, in execute_workflow
+    resources = self.safe_agent_execution(
+                │    └ <function WorkflowManager.safe_agent_execution at 0x0000017DD6904F40>
+                └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 149, in safe_agent_execution
+    return agent_method(*args)
+           │             └ ("\n        Planning Agent could not complete execution.\n\n        Reason:\n        Error code: 401 - {'error': {'message': ...
+           └ <bound method ResourceAgent.allocate_resources of <agents.resource_agent.ResourceAgent object at 0x0000017DD81DF850>>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\resource_agent.py", line 26, in allocate_resources
+    return self.invoke(prompt)
+           │    │      └ "\n\n        You are a Resource Allocation Agent.\n\n        Responsibilities:\n        - assign tasks\n        - balance wor...
+           │    └ <function BaseAgent.invoke at 0x0000017DB06B5B20>
+           └ <agents.resource_agent.ResourceAgent object at 0x0000017DD81DF850>
+
+> File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\base_agent.py", line 53, in invoke
+    response = future.result(timeout=60)
+               │      └ <function Future.result at 0x0000017D93FCFB00>
+               └ <Future at 0x17dda059990 state=finished raised AuthenticationError>
+
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+          └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             │        │            └ None
+             │        └ None
+             └ None
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 474, in invoke
+    self.generate_prompt(
+    │    └ <function BaseChatModel.generate_prompt at 0x0000017DB040AE80>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           │    │        │                     │               │            └ {'tags': [], 'metadata': {}, 'run_name': None, 'run_id': None}
+           │    │        │                     │               └ None
+           │    │        │                     └ None
+           │    │        └ [[HumanMessage(content="\n        Context:\n        \n\n        User Request:\n        \n\n        You are a Resource Allocat...
+           │    └ <function BaseChatModel.generate at 0x0000017DB040AD40>
+           └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+    │    └ <function BaseChatModel._generate_with_cache at 0x0000017DB040AFC0>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+             │    └ <function BaseChatOpenAI._generate at 0x0000017DB04B7240>
+             └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1655, in _generate
+    _handle_openai_api_error(e)
+    └ <function _handle_openai_api_error at 0x0000017DB04B63E0>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1650, in _generate
+    raw_response = self.client.with_raw_response.create(**payload)
+                   │    │      │                 │        └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+                   │    │      │                 └ <function Completions.create at 0x0000017DDA00F100>
+                   │    │      └ <openai.resources.chat.completions.completions.CompletionsWithRawResponse object at 0x0000017DDA05A950>
+                   │    └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E8E10>
+                   └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_legacy_response.py", line 367, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+           │    │                 │   │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │    │                 │   │     └ ()
+           │    │                 │   └ <bound method Completions.create of <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E8E10>>
+           │    │                 └ ~R
+           │    └ <class 'openai._legacy_response.LegacyAPIResponse'>
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │     └ (<openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E8E10>,)
+           └ <function Completions.create at 0x0000017DD7A9F560>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1215, in create
+    return self._post(
+           │    └ <bound method SyncAPIClient.post of <openai.OpenAI object at 0x0000017DD81E8990>>
+           └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E8E10>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+           │    │          │    │       │        │            │                  └ openai.Stream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+           │    │          │    │       │        │            └ False
+           │    │          │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers={'X-Stainless-Raw-Response': 'true'}, max_retr...
+           │    │          │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+           │    │          │    └ <function SyncAPIClient.request at 0x0000017D97B2F420>
+           │    │          └ <openai.OpenAI object at 0x0000017DD81E8990>
+           │    └ ~ResponseT
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1105, in request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x0000017D97B2D940>
+          └ <openai.OpenAI object at 0x0000017DD81E8990>
+
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2026-05-19 17:36:08.424 | ERROR    | agents.base_agent:invoke:110 - Scrum Assistant Agent unexpected error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\tests\test_advanced_workflow.py", line 5, in <module>
+    result = workflow.execute_workflow(
+             │        └ <function WorkflowManager.execute_workflow at 0x0000017DD6904CC0>
+             └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 68, in execute_workflow
+    scrum = self.safe_agent_execution(
+            │    └ <function WorkflowManager.safe_agent_execution at 0x0000017DD6904F40>
+            └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 149, in safe_agent_execution
+    return agent_method(*args)
+           │             └ ("\n        Planning Agent could not complete execution.\n\n        Reason:\n        Error code: 401 - {'error': {'message': ...
+           └ <bound method ScrumAgent.generate_standup of <agents.scrum_agent.ScrumAgent object at 0x0000017DD81DE710>>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\scrum_agent.py", line 26, in generate_standup
+    return self.invoke(prompt)
+           │    │      └ "\n\n        You are a Scrum Assistant Agent.\n\n        Generate:\n        - standup summary\n        - sprint retrospective...
+           │    └ <function BaseAgent.invoke at 0x0000017DB06B5B20>
+           └ <agents.scrum_agent.ScrumAgent object at 0x0000017DD81DE710>
+
+> File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\base_agent.py", line 53, in invoke
+    response = future.result(timeout=60)
+               │      └ <function Future.result at 0x0000017D93FCFB00>
+               └ <Future at 0x17dda05bf10 state=finished raised AuthenticationError>
+
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+          └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             │        │            └ None
+             │        └ None
+             └ None
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 474, in invoke
+    self.generate_prompt(
+    │    └ <function BaseChatModel.generate_prompt at 0x0000017DB040AE80>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           │    │        │                     │               │            └ {'tags': [], 'metadata': {}, 'run_name': None, 'run_id': None}
+           │    │        │                     │               └ None
+           │    │        │                     └ None
+           │    │        └ [[HumanMessage(content="\n        Context:\n        \n\n        User Request:\n        \n\n        You are a Scrum Assistant ...
+           │    └ <function BaseChatModel.generate at 0x0000017DB040AD40>
+           └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+    │    └ <function BaseChatModel._generate_with_cache at 0x0000017DB040AFC0>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+             │    └ <function BaseChatOpenAI._generate at 0x0000017DB04B7240>
+             └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1655, in _generate
+    _handle_openai_api_error(e)
+    └ <function _handle_openai_api_error at 0x0000017DB04B63E0>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1650, in _generate
+    raw_response = self.client.with_raw_response.create(**payload)
+                   │    │      │                 │        └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+                   │    │      │                 └ <function Completions.create at 0x0000017DDA00F740>
+                   │    │      └ <openai.resources.chat.completions.completions.CompletionsWithRawResponse object at 0x0000017DDA058310>
+                   │    └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DFED0>
+                   └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_legacy_response.py", line 367, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+           │    │                 │   │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │    │                 │   │     └ ()
+           │    │                 │   └ <bound method Completions.create of <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DFED0>>
+           │    │                 └ ~R
+           │    └ <class 'openai._legacy_response.LegacyAPIResponse'>
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │     └ (<openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DFED0>,)
+           └ <function Completions.create at 0x0000017DD7A9F560>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1215, in create
+    return self._post(
+           │    └ <bound method SyncAPIClient.post of <openai.OpenAI object at 0x0000017DD81DFA50>>
+           └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81DFED0>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+           │    │          │    │       │        │            │                  └ openai.Stream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+           │    │          │    │       │        │            └ False
+           │    │          │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers={'X-Stainless-Raw-Response': 'true'}, max_retr...
+           │    │          │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+           │    │          │    └ <function SyncAPIClient.request at 0x0000017D97B2F420>
+           │    │          └ <openai.OpenAI object at 0x0000017DD81DFA50>
+           │    └ ~ResponseT
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1105, in request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x0000017D97B2D940>
+          └ <openai.OpenAI object at 0x0000017DD81DFA50>
+
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2026-05-19 17:36:08.808 | ERROR    | agents.base_agent:invoke:110 - Report Agent unexpected error: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+Traceback (most recent call last):
+
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\tests\test_advanced_workflow.py", line 5, in <module>
+    result = workflow.execute_workflow(
+             │        └ <function WorkflowManager.execute_workflow at 0x0000017DD6904CC0>
+             └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 73, in execute_workflow
+    report = self.safe_agent_execution(
+             │    └ <function WorkflowManager.safe_agent_execution at 0x0000017DD6904F40>
+             └ <orchestrator.workflow_manager.WorkflowManager object at 0x0000017DD6542090>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\orchestrator\workflow_manager.py", line 149, in safe_agent_execution
+    return agent_method(*args)
+           │             └ ("\n        Planning Agent could not complete execution.\n\n        Reason:\n        Error code: 401 - {'error': {'message': ...
+           └ <bound method ReportAgent.generate_report of <agents.report_agent.ReportAgent object at 0x0000017DD81E8790>>
+
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\report_agent.py", line 26, in generate_report
+    return self.invoke(prompt)
+           │    │      └ "\n\n        You are an enterprise Report Agent.\n\n        Generate:\n        - stakeholder summary\n        - sprint report...
+           │    └ <function BaseAgent.invoke at 0x0000017DB06B5B20>
+           └ <agents.report_agent.ReportAgent object at 0x0000017DD81E8790>
+
+> File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\agents\base_agent.py", line 53, in invoke
+    response = future.result(timeout=60)
+               │      └ <function Future.result at 0x0000017D93FCFB00>
+               └ <Future at 0x17dda062750 state=finished raised AuthenticationError>
+
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+          └ None
+  File "C:\Users\omend\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             │        │            └ None
+             │        └ None
+             └ None
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 474, in invoke
+    self.generate_prompt(
+    │    └ <function BaseChatModel.generate_prompt at 0x0000017DB040AE80>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1823, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           │    │        │                     │               │            └ {'tags': [], 'metadata': {}, 'run_name': None, 'run_id': None}
+           │    │        │                     │               └ None
+           │    │        │                     └ None
+           │    │        └ [[HumanMessage(content="\n        Context:\n        \n\n        User Request:\n        \n\n        You are an enterprise Repo...
+           │    └ <function BaseChatModel.generate at 0x0000017DB040AD40>
+           └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1630, in generate
+    self._generate_with_cache(
+    │    └ <function BaseChatModel._generate_with_cache at 0x0000017DB040AFC0>
+    └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1970, in _generate_with_cache
+    result = self._generate(
+             │    └ <function BaseChatOpenAI._generate at 0x0000017DB04B7240>
+             └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1655, in _generate
+    _handle_openai_api_error(e)
+    └ <function _handle_openai_api_error at 0x0000017DB04B63E0>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\langchain_openai\chat_models\base.py", line 1650, in _generate
+    raw_response = self.client.with_raw_response.create(**payload)
+                   │    │      │                 │        └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+                   │    │      │                 └ <function Completions.create at 0x0000017DDA00FC40>
+                   │    │      └ <openai.resources.chat.completions.completions.CompletionsWithRawResponse object at 0x0000017DDA0637D0>
+                   │    └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E9D10>
+                   └ ChatOpenAI(profile={'name': 'GPT-4o mini', 'release_date': '2024-07-18', 'last_updated': '2024-07-18', 'open_weights': False,...
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_legacy_response.py", line 367, in wrapped
+    return cast(LegacyAPIResponse[R], func(*args, **kwargs))
+           │    │                 │   │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │    │                 │   │     └ ()
+           │    │                 │   └ <bound method Completions.create of <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E9D10>>
+           │    │                 └ ~R
+           │    └ <class 'openai._legacy_response.LegacyAPIResponse'>
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'model': 'gpt-4o-mini', 'stream': False, 'temperature': 0.7, 'max_completion_tokens': 2000, 'messages': [{'content': "\n    ...
+           │     └ (<openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E9D10>,)
+           └ <function Completions.create at 0x0000017DD7A9F560>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1215, in create
+    return self._post(
+           │    └ <bound method SyncAPIClient.post of <openai.OpenAI object at 0x0000017DD81E9890>>
+           └ <openai.resources.chat.completions.completions.Completions object at 0x0000017DD81E9D10>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1332, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+           │    │          │    │       │        │            │                  └ openai.Stream[openai.types.chat.chat_completion_chunk.ChatCompletionChunk]
+           │    │          │    │       │        │            └ False
+           │    │          │    │       │        └ FinalRequestOptions(method='post', url='/chat/completions', params={}, headers={'X-Stainless-Raw-Response': 'true'}, max_retr...
+           │    │          │    │       └ <class 'openai.types.chat.chat_completion.ChatCompletion'>
+           │    │          │    └ <function SyncAPIClient.request at 0x0000017D97B2F420>
+           │    │          └ <openai.OpenAI object at 0x0000017DD81E9890>
+           │    └ ~ResponseT
+           └ <function cast at 0x0000017D9421FD80>
+  File "C:\Users\omend\OneDrive\Multi-Agent-AI-Agile-Project-Automation-System\venv\Lib\site-packages\openai\_base_client.py", line 1105, in request
+    raise self._make_status_error_from_response(err.response) from None
+          │    └ <function BaseClient._make_status_error_from_response at 0x0000017D97B2D940>
+          └ <openai.OpenAI object at 0x0000017DD81E9890>
+
+openai.AuthenticationError: Error code: 401 - {'error': {'message': 'Incorrect API key provided: k-proj-S*******************************************************************************************************************************************************C6gA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}

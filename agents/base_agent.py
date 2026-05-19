@@ -1,6 +1,10 @@
 import time
 import concurrent.futures
 
+from openai import RateLimitError
+from openai import APIConnectionError
+from openai import APITimeoutError
+
 from langchain_openai import ChatOpenAI
 
 from orchestrator.config import *
@@ -19,8 +23,8 @@ class BaseAgent:
         self.llm = ChatOpenAI(
             model=MODEL_NAME,
             api_key=OPENAI_API_KEY,
-            temperature=TEMPERATURE,
-            max_tokens=MAX_TOKENS
+            temperature=float(TEMPERATURE),
+            max_tokens=int(MAX_TOKENS)
         )
 
     def invoke(self, prompt, context=""):
@@ -64,7 +68,60 @@ class BaseAgent:
         except concurrent.futures.TimeoutError:
 
             logger.error(
-                f"{self.role} request timed out after 60 seconds"
+                f"{self.role} timed out after 60 seconds"
             )
 
-            return "Request timed out."
+            return self.fallback_response(
+                "Request timeout occurred."
+            )
+
+        except RateLimitError:
+
+            logger.error(
+                f"{self.role} hit OpenAI rate limits"
+            )
+
+            return self.fallback_response(
+                "API rate limit exceeded."
+            )
+
+        except APIConnectionError:
+
+            logger.error(
+                f"{self.role} API connection failed"
+            )
+
+            return self.fallback_response(
+                "API connection issue."
+            )
+
+        except APITimeoutError:
+
+            logger.error(
+                f"{self.role} API timeout occurred"
+            )
+
+            return self.fallback_response(
+                "API timeout issue."
+            )
+
+        except Exception as error:
+
+            logger.exception(
+                f"{self.role} unexpected error: {error}"
+            )
+
+            return self.fallback_response(
+                str(error)
+            )
+
+    def fallback_response(self, reason):
+
+        return f"""
+        {self.role} could not complete execution.
+
+        Reason:
+        {reason}
+
+        Enterprise fallback response activated.
+        """

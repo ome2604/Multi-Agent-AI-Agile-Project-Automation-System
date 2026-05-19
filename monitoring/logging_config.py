@@ -1,5 +1,7 @@
 from loguru import logger
+
 import sys
+
 
 logger.remove()
 
@@ -10,8 +12,13 @@ logger.add(
 )
 
 logger.add(
-    "system.log",
+    "logs/error.log",
     rotation="10 MB",
-    retention="10 days",
-    level="DEBUG"
+    level="ERROR"
+)
+
+logger.add(
+    "logs/system.log",
+    rotation="10 MB",
+    level="INFO"
 )
