@@ -1,14 +1,46 @@
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+
+from security.env_validator import (
+    EnvironmentValidator
+)
+
+from security.secret_manager import (
+    SecretManager
+)
 
 load_dotenv()
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
-LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY")
 
-MODEL_NAME = os.getenv("MODEL_NAME")
-TEMPERATURE = float(os.getenv("TEMPERATURE"))
-MAX_TOKENS = int(os.getenv("MAX_TOKENS"))
+EnvironmentValidator.validate()
 
-CHROMA_DB_DIR = os.getenv("CHROMA_DB_DIR")
+
+OPENAI_API_KEY = SecretManager.get_secret(
+    "OPENAI_API_KEY"
+)
+
+MODEL_NAME = os.getenv(
+    "MODEL_NAME",
+    "gpt-4o-mini"
+)
+
+TEMPERATURE = float(
+    os.getenv(
+        "TEMPERATURE",
+        0.7
+    )
+)
+
+MAX_TOKENS = int(
+    os.getenv(
+        "MAX_TOKENS",
+        1000
+    )
+)
+
+TAVILY_API_KEY = os.getenv(
+    "TAVILY_API_KEY"
+)
+
+CHROMA_DB_DIR = "chromadb"

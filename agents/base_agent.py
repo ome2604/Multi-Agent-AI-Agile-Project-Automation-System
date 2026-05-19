@@ -1,4 +1,3 @@
-import time
 import asyncio
 
 from tenacity import (
@@ -27,6 +26,10 @@ from monitoring.metrics_collector import MetricsCollector
 from monitoring.audit_logger import AuditLogger
 
 from cache.cache_manager import CacheManager
+
+from security.input_sanitizer import (
+    InputSanitizer
+)
 
 
 class BaseAgent:
@@ -131,6 +134,14 @@ class BaseAgent:
             self.role,
 
             "STARTED"
+        )
+
+        prompt = InputSanitizer.sanitize_text(
+            prompt
+        )
+
+        prompt = InputSanitizer.validate_prompt_length(
+            prompt
         )
 
         full_prompt = f"""
