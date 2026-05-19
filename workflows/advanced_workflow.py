@@ -1,159 +1,117 @@
-from langgraph.graph import StateGraph, END
-
-from workflows.workflow_state import WorkflowState
-
 from agents.planning_agent import PlanningAgent
 from agents.risk_agent import RiskAgent
-from agents.resource_agent import ResourceAgent
 from agents.scrum_agent import ScrumAgent
+from agents.resource_agent import ResourceAgent
 from agents.report_agent import ReportAgent
 
+from rag.context_builder import ContextBuilder
 
-class AdvancedWorkflow:
+from memory.short_term_memory import ShortTermMemory
+from memory.long_term_memory import LongTermMemory
+
+from monitoring.logging_config import logger
+
+
+class WorkflowManager:
 
     def __init__(self):
+
+        logger.info("Initializing Workflow Manager")
 
         self.planning_agent = PlanningAgent()
 
         self.risk_agent = RiskAgent()
 
-        self.resource_agent = ResourceAgent()
-
         self.scrum_agent = ScrumAgent()
+
+        self.resource_agent = ResourceAgent()
 
         self.report_agent = ReportAgent()
 
-        self.graph = StateGraph(WorkflowState)
+        self.context_builder = ContextBuilder()
 
-        self.build_graph()
+        self.short_memory = ShortTermMemory()
 
-    def planning_node(self, state):
+        self.long_memory = LongTermMemory()
 
-        result = self.planning_agent.generate_plan(
-            state["user_input"]
+    def execute_workflow(self, project_goal):
+
+        logger.info("Starting Multi-Agent Workflow")
+
+        retrieved_context = self.context_builder.build_context(
+            project_goal
         )
 
-        state["project_plan"] = result
-
-        return state
-
-    def risk_node(self, state):
-
-        result = self.risk_agent.analyze_risks(
-            state["project_plan"]
+        self.short_memory.save(
+            "latest_user_request",
+            project_goal
         )
 
-        state["risks"] = result
-
-        return state
-
-    def resource_node(self, state):
-
-        result = self.resource_agent.allocate_resources(
-            state["project_plan"]
+        plan = self.planning_agent.generate_plan(
+            project_goal,
+            context=retrieved_context
         )
 
-        state["resources"] = result
-
-        return state
-
-    def scrum_node(self, state):
-
-        result = self.scrum_agent.generate_standup(
-            state["project_plan"]
+        self.long_memory.save(
+            "project_plan",
+            plan
         )
 
-        state["scrum_updates"] = result
-
-        return state
-
-    def report_node(self, state):
-
-        result = self.report_agent.generate_report(
-            state["project_plan"]
+        risks = self.risk_agent.analyze_risks(
+            plan
         )
 
-        state["report"] = result
-
-        return state
-
-    def build_graph(self):
-
-        self.graph.add_node(
-            "planning",
-            self.planning_node
+        self.long_memory.save(
+            "risks",
+            risks
         )
 
-        self.graph.add_node(
-            "risk",
-            self.risk_node
+        resources = self.resource_agent.allocate_resources(
+            plan
         )
 
-        self.graph.add_node(
-            "resource",
-            self.resource_node
+        self.long_memory.save(
+            "resources",
+            resources
         )
 
-        self.graph.add_node(
-            "scrum",
-            self.scrum_node
+        scrum = self.scrum_agent.generate_standup(
+            plan
         )
 
-        self.graph.add_node(
-            "report",
-            self.report_node
+        self.long_memory.save(
+            "scrum_updates",
+            scrum
         )
 
-        self.graph.set_entry_point(
-            "planning"
+        report = self.report_agent.generate_report(
+            plan
         )
 
-        self.graph.add_edge(
-            "planning",
-            "risk"
+        self.long_memory.save(
+            "final_report",
+            report
         )
 
-        self.graph.add_edge(
-            "risk",
-            "resource"
+        logger.info(
+            "Enterprise workflow completed successfully"
         )
 
-        self.graph.add_edge(
-            "resource",
-            "scrum"
-        )
+        return {
 
-        self.graph.add_edge(
-            "scrum",
-            "report"
-        )
+            "retrieved_context": retrieved_context,
 
-        self.graph.add_edge(
-            "report",
-            END
-        )
+            "plan": plan,
 
-        self.workflow = self.graph.compile()
+            "risks": risks,
 
-    def execute(self, user_input):
+            "resources": resources,
 
-        initial_state = {
+            "scrum": scrum,
 
-            "user_input": user_input,
+            "report": report,
 
-            "project_plan": "",
+            "short_memory": self.short_memory.get_all(),
 
-            "risks": "",
-
-            "resources": "",
-
-            "scrum_updates": "",
-
-            "report": "",
-
-            "context": ""
+            "long_memory": self.long_memory.load_all()
         }
-
-        return self.workflow.invoke(
-            initial_state
-        )

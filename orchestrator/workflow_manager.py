@@ -35,7 +35,7 @@ class WorkflowManager:
             plan
         )
 
-        scrum = self.scrum_agent.generate_scrum_summary(
+        scrum = self.scrum_agent.generate_standup(
             plan
         )
 
@@ -45,8 +45,12 @@ class WorkflowManager:
 
         return {
             "plan": plan,
+            "______________________________________________"
             "risks": risks,
+            "______________________________________________"
             "resources": resources,
+            "______________________________________________"
             "scrum": scrum,
+            "______________________________________________"
             "report": report
         }

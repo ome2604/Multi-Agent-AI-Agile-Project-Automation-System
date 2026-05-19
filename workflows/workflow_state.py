@@ -5,6 +5,8 @@ class WorkflowState(TypedDict):
 
     user_input: str
 
+    retrieved_context: str
+
     project_plan: str
 
     risks: str
@@ -15,4 +17,8 @@ class WorkflowState(TypedDict):
 
     report: str
 
-    context: str
+    short_memory: dict
+
+    long_memory: dict
+
+    tool_outputs: dict

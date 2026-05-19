@@ -1,5 +1,10 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+import time
+import concurrent.futures
+
+from langchain_openai import ChatOpenAI
+
 from orchestrator.config import *
+
 from monitoring.logging_config import logger
 
 
@@ -11,18 +16,55 @@ class BaseAgent:
 
         logger.info(f"Initializing {self.role}")
 
-        self.llm = ChatGoogleGenerativeAI(
+        self.llm = ChatOpenAI(
             model=MODEL_NAME,
-            google_api_key=GOOGLE_API_KEY,
-            temperature=TEMPERATURE
+            api_key=OPENAI_API_KEY,
+            temperature=TEMPERATURE,
+            max_tokens=MAX_TOKENS
         )
 
-    def invoke(self, prompt):
+    def invoke(self, prompt, context=""):
 
         logger.info(f"{self.role} processing request")
 
-        response = self.llm.invoke(prompt)
+        full_prompt = f"""
+        Context:
+        {context}
 
-        logger.info(f"{self.role} completed request")
+        User Request:
+        {prompt}
+        """
 
-        return response.content
+        start_time = time.time()
+
+        try:
+
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+
+                future = executor.submit(
+                    self.llm.invoke,
+                    full_prompt
+                )
+
+                response = future.result(timeout=60)
+
+            end_time = time.time()
+
+            response_time = round(
+                end_time - start_time,
+                2
+            )
+
+            logger.info(
+                f"{self.role} completed request in {response_time} seconds"
+            )
+
+            return response.content
+
+        except concurrent.futures.TimeoutError:
+
+            logger.error(
+                f"{self.role} request timed out after 60 seconds"
+            )
+
+            return "Request timed out."

@@ -1,5 +1,7 @@
 from agents.base_agent import BaseAgent
+
 from tools.tool_manager import ToolManager
+
 
 class PlanningAgent(BaseAgent):
 
@@ -9,7 +11,7 @@ class PlanningAgent(BaseAgent):
 
         self.tools = ToolManager()
 
-    def generate_plan(self, project_goal):
+    def generate_plan(self, project_goal, context=""):
 
         web_research = self.tools.web_search(
             f"Best Agile practices for {project_goal}"
@@ -18,6 +20,9 @@ class PlanningAgent(BaseAgent):
         prompt = f"""
 
         You are an enterprise Agile Planning Agent.
+
+        Retrieved Context:
+        {context}
 
         Web Research:
         {web_research}
@@ -35,7 +40,10 @@ class PlanningAgent(BaseAgent):
         2. Sprint Plan
         3. Dependencies
         4. Estimated Timeline
-        
+
         """
 
-        return self.invoke(prompt)
+        return self.invoke(
+            prompt,
+            context=context
+        )
