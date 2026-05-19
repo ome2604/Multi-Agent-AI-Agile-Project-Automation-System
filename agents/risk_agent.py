@@ -6,7 +6,7 @@ class RiskAgent(BaseAgent):
 
         super().__init__("Risk Analysis Agent")
 
-    def analyze_risks(self, project_context):
+    async def analyze_risks(self, project_context):
 
         prompt = f"""
 
@@ -29,4 +29,4 @@ class RiskAgent(BaseAgent):
 
         """
 
-        return self.invoke(prompt)
+        return await self.invoke(prompt)

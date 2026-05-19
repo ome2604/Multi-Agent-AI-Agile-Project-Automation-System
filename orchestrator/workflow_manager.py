@@ -1,3 +1,7 @@
+import asyncio
+
+from agents.base_agent import BaseAgent
+
 from agents.planning_agent import PlanningAgent
 from agents.risk_agent import RiskAgent
 from agents.scrum_agent import ScrumAgent
@@ -10,6 +14,7 @@ from memory.short_term_memory import ShortTermMemory
 from memory.long_term_memory import LongTermMemory
 
 from monitoring.logging_config import logger
+from monitoring.audit_logger import AuditLogger
 
 
 class WorkflowManager:
@@ -17,6 +22,8 @@ class WorkflowManager:
     def __init__(self):
 
         logger.info("Initializing Workflow Manager")
+
+        self.audit_logger = AuditLogger()
 
         self.planning_agent = PlanningAgent()
 
@@ -34,9 +41,21 @@ class WorkflowManager:
 
         self.long_memory = LongTermMemory()
 
-    def execute_workflow(self, project_goal):
+    async def execute_workflow(
+        self,
+        project_goal
+    ):
 
-        logger.info("Starting Multi-Agent Workflow")
+        logger.info(
+            "Starting Async Multi-Agent Workflow"
+        )
+
+        self.audit_logger.log_workflow_start(
+
+            "Enterprise Multi-Agent Workflow",
+
+            project_goal
+        )
 
         try:
 
@@ -49,29 +68,42 @@ class WorkflowManager:
                 project_goal
             )
 
-            plan = self.safe_agent_execution(
-                self.planning_agent.generate_plan,
+            plan = await self.planning_agent.generate_plan(
                 project_goal,
-                retrieved_context
+                context=retrieved_context
             )
 
-            risks = self.safe_agent_execution(
-                self.risk_agent.analyze_risks,
-                plan
+            risk_task = asyncio.create_task(
+
+                self.risk_agent.analyze_risks(
+                    plan
+                )
             )
 
-            resources = self.safe_agent_execution(
-                self.resource_agent.allocate_resources,
-                plan
+            resource_task = asyncio.create_task(
+
+                self.resource_agent.allocate_resources(
+                    plan
+                )
             )
 
-            scrum = self.safe_agent_execution(
-                self.scrum_agent.generate_standup,
-                plan
+            scrum_task = asyncio.create_task(
+
+                self.scrum_agent.generate_standup(
+                    plan
+                )
             )
 
-            report = self.safe_agent_execution(
-                self.report_agent.generate_report,
+            risks, resources, scrum = await asyncio.gather(
+
+                risk_task,
+
+                resource_task,
+
+                scrum_task
+            )
+
+            report = await self.report_agent.generate_report(
                 plan
             )
 
@@ -100,8 +132,13 @@ class WorkflowManager:
                 report
             )
 
+            self.audit_logger.log_workflow_complete(
+
+                "Enterprise Multi-Agent Workflow"
+            )
+
             logger.info(
-                "Enterprise workflow completed successfully"
+                "Async enterprise workflow completed"
             )
 
             return {
@@ -118,45 +155,35 @@ class WorkflowManager:
 
                 "report": report,
 
-                "short_memory": self.short_memory.get_all(),
+                "workflow_metrics":
+                BaseAgent.metrics_collector.get_metrics(),
 
-                "long_memory": self.long_memory.load_all()
+                "token_usage":
+                BaseAgent.token_tracker.get_usage(),
+
+                "short_memory":
+                self.short_memory.get_all(),
+
+                "long_memory":
+                self.long_memory.load_all()
             }
 
         except Exception as error:
 
+            self.audit_logger.log_error(
+
+                "WorkflowManager",
+
+                error
+            )
+
             logger.exception(
-                f"Workflow execution failed: {error}"
+                f"Workflow failed: {error}"
             )
 
             return {
 
                 "status": "FAILED",
 
-                "error": str(error),
-
-                "message": "Enterprise workflow failure handled gracefully."
+                "error": str(error)
             }
-
-    def safe_agent_execution(
-        self,
-        agent_method,
-        *args
-    ):
-
-        try:
-
-            return agent_method(*args)
-
-        except Exception as error:
-
-            logger.exception(
-                f"Agent execution failed: {error}"
-            )
-
-            return f"""
-            Agent Failure Recovery Activated.
-
-            Error:
-            {error}
-            """

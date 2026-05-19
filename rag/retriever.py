@@ -4,6 +4,8 @@ from sentence_transformers import SentenceTransformer
 
 from orchestrator.config import CHROMA_DB_DIR
 
+from cache.cache_manager import CacheManager
+
 
 class Retriever:
 
@@ -21,15 +23,47 @@ class Retriever:
             "all-MiniLM-L6-v2"
         )
 
-    def retrieve(self, query, top_k=3):
+        self.cache = CacheManager()
 
-        query_embedding = self.embedding_model.encode(
+    def retrieve(
+        self,
+        query,
+        top_k=3
+    ):
+
+        cached_result = self.cache.get_retrieval(
             query
-        ).tolist()
+        )
+
+        if cached_result:
+
+            return cached_result
+
+        query_embedding = self.cache.get_embedding(
+            query
+        )
+
+        if not query_embedding:
+
+            query_embedding = self.embedding_model.encode(
+                query
+            ).tolist()
+
+            self.cache.set_embedding(
+                query,
+                query_embedding
+            )
 
         results = self.collection.query(
             query_embeddings=[query_embedding],
             n_results=top_k
         )
 
-        return results["documents"][0]
+        documents = results["documents"][0]
+
+        self.cache.set_retrieval(
+            query,
+            documents
+        )
+
+        return documents

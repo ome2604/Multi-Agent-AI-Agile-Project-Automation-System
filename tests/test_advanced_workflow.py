@@ -1,15 +1,29 @@
+import asyncio
+
 from orchestrator.workflow_manager import WorkflowManager
 
-workflow = WorkflowManager()
+from monitoring.workflow_analytics import WorkflowAnalytics
 
-result = workflow.execute_workflow(
-    "Build an AI-powered ecommerce platform"
-)
 
-print("\n===== ENTERPRISE WORKFLOW OUTPUT =====\n")
+async def main():
 
-for key, value in result.items():
+    workflow = WorkflowManager()
 
-    print(f"\n===== {key.upper()} =====\n")
+    result = await workflow.execute_workflow(
+        "Build an AI-powered ecommerce platform"
+    )
 
-    print(value)
+    analytics = WorkflowAnalytics()
+
+    analytics.generate_summary(result)
+
+    print("\n===== ENTERPRISE WORKFLOW OUTPUT =====\n")
+
+    for key, value in result.items():
+
+        print(f"\n===== {key.upper()} =====\n")
+
+        print(value)
+
+
+asyncio.run(main())

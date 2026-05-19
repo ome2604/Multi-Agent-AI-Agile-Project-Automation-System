@@ -1,24 +1,21 @@
-from loguru import logger
+import logging
 
-import sys
+from pythonjsonlogger import jsonlogger
 
 
-logger.remove()
-
-logger.add(
-    sys.stdout,
-    format="{time} | {level} | {message}",
-    level="INFO"
+logger = logging.getLogger(
+    "enterprise_ai_system"
 )
 
-logger.add(
-    "logs/error.log",
-    rotation="10 MB",
-    level="ERROR"
+logger.setLevel(logging.INFO)
+
+logHandler = logging.StreamHandler()
+
+formatter = jsonlogger.JsonFormatter(
+
+    "%(asctime)s %(levelname)s %(message)s"
 )
 
-logger.add(
-    "logs/system.log",
-    rotation="10 MB",
-    level="INFO"
-)
+logHandler.setFormatter(formatter)
+
+logger.addHandler(logHandler)

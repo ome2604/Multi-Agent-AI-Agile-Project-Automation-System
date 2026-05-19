@@ -6,7 +6,7 @@ class ReportAgent(BaseAgent):
 
         super().__init__("Report Agent")
 
-    def generate_report(self, project_context):
+    async def generate_report(self, project_context):
 
         prompt = f"""
 
@@ -23,4 +23,4 @@ class ReportAgent(BaseAgent):
         
         """
 
-        return self.invoke(prompt)
+        return await self.invoke(prompt)

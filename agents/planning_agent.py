@@ -11,7 +11,7 @@ class PlanningAgent(BaseAgent):
 
         self.tools = ToolManager()
 
-    def generate_plan(self, project_goal, context=""):
+    async def generate_plan(self, project_goal, context=""):
 
         web_research = self.tools.web_search(
             f"Best Agile practices for {project_goal}"
@@ -43,7 +43,7 @@ class PlanningAgent(BaseAgent):
 
         """
 
-        return self.invoke(
+        return await self.invoke(
             prompt,
             context=context
         )

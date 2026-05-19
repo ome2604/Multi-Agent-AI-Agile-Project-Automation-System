@@ -6,7 +6,7 @@ class ResourceAgent(BaseAgent):
 
         super().__init__("Resource Allocation Agent")
 
-    def allocate_resources(self, project_data):
+    async def allocate_resources(self, project_data):
 
         prompt = f"""
 
@@ -23,4 +23,4 @@ class ResourceAgent(BaseAgent):
         
         """
 
-        return self.invoke(prompt)
+        return await self.invoke(prompt)

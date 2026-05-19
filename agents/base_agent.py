@@ -1,9 +1,18 @@
 import time
-import concurrent.futures
+import asyncio
 
-from openai import RateLimitError
-from openai import APIConnectionError
-from openai import APITimeoutError
+from tenacity import (
+    retry,
+    stop_after_attempt,
+    wait_exponential,
+    retry_if_exception_type
+)
+
+from openai import (
+    RateLimitError,
+    APIConnectionError,
+    APITimeoutError
+)
 
 from langchain_openai import ChatOpenAI
 
@@ -11,8 +20,30 @@ from orchestrator.config import *
 
 from monitoring.logging_config import logger
 
+from monitoring.rate_limiter import RateLimiter
+from monitoring.token_tracker import TokenTracker
+from monitoring.request_queue import RequestQueue
+from monitoring.metrics_collector import MetricsCollector
+from monitoring.audit_logger import AuditLogger
+
+from cache.cache_manager import CacheManager
+
 
 class BaseAgent:
+
+    rate_limiter = RateLimiter(
+        requests_per_minute=10
+    )
+
+    token_tracker = TokenTracker()
+
+    request_queue = RequestQueue()
+
+    metrics_collector = MetricsCollector()
+
+    cache_manager = CacheManager()
+
+    audit_logger = AuditLogger()
 
     def __init__(self, role):
 
@@ -27,9 +58,80 @@ class BaseAgent:
             max_tokens=int(MAX_TOKENS)
         )
 
-    def invoke(self, prompt, context=""):
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(
+            multiplier=2,
+            min=2,
+            max=20
+        ),
+        retry=retry_if_exception_type(
+            (
+                RateLimitError,
+                APIConnectionError,
+                APITimeoutError
+            )
+        )
+    )
+    async def execute_llm_call(
+        self,
+        full_prompt
+    ):
+
+        BaseAgent.rate_limiter.acquire()
+
+        BaseAgent.request_queue.add_request(
+            full_prompt
+        )
+
+        BaseAgent.request_queue.process_next()
+
+        BaseAgent.audit_logger.log_api_call(
+
+            "OpenAI",
+
+            "REQUEST_STARTED"
+        )
+
+        response = await self.llm.ainvoke(
+            full_prompt
+        )
+
+        BaseAgent.audit_logger.log_api_call(
+
+            "OpenAI",
+
+            "REQUEST_COMPLETED"
+        )
+
+        usage = response.response_metadata.get(
+            "token_usage",
+            {}
+        )
+
+        BaseAgent.token_tracker.track(
+
+            usage.get("prompt_tokens", 0),
+
+            usage.get("completion_tokens", 0)
+        )
+
+        return response
+
+    async def invoke(
+        self,
+        prompt,
+        context=""
+    ):
 
         logger.info(f"{self.role} processing request")
+
+        BaseAgent.audit_logger.log_agent_execution(
+
+            self.role,
+
+            "STARTED"
+        )
 
         full_prompt = f"""
         Context:
@@ -39,76 +141,65 @@ class BaseAgent:
         {prompt}
         """
 
-        start_time = time.time()
+        cached_response = BaseAgent.cache_manager.get_prompt(
+            full_prompt
+        )
+
+        if cached_response:
+
+            logger.info(
+                f"{self.role} using cached response"
+            )
+
+            return cached_response
+
+        start_time = BaseAgent.metrics_collector.start_timer()
 
         try:
 
-            with concurrent.futures.ThreadPoolExecutor() as executor:
+            response = await self.execute_llm_call(
+                full_prompt
+            )
 
-                future = executor.submit(
-                    self.llm.invoke,
-                    full_prompt
-                )
+            BaseAgent.cache_manager.set_prompt(
+                full_prompt,
+                response.content
+            )
 
-                response = future.result(timeout=60)
-
-            end_time = time.time()
-
-            response_time = round(
-                end_time - start_time,
-                2
+            response_time = BaseAgent.metrics_collector.stop_timer(
+                self.role,
+                start_time
             )
 
             logger.info(
-                f"{self.role} completed request in {response_time} seconds"
+                f"""
+                {self.role} completed request
+
+                Response Time:
+                {response_time} seconds
+                """
+            )
+
+            BaseAgent.audit_logger.log_agent_execution(
+
+                self.role,
+
+                "COMPLETED"
             )
 
             return response.content
 
-        except concurrent.futures.TimeoutError:
-
-            logger.error(
-                f"{self.role} timed out after 60 seconds"
-            )
-
-            return self.fallback_response(
-                "Request timeout occurred."
-            )
-
-        except RateLimitError:
-
-            logger.error(
-                f"{self.role} hit OpenAI rate limits"
-            )
-
-            return self.fallback_response(
-                "API rate limit exceeded."
-            )
-
-        except APIConnectionError:
-
-            logger.error(
-                f"{self.role} API connection failed"
-            )
-
-            return self.fallback_response(
-                "API connection issue."
-            )
-
-        except APITimeoutError:
-
-            logger.error(
-                f"{self.role} API timeout occurred"
-            )
-
-            return self.fallback_response(
-                "API timeout issue."
-            )
-
         except Exception as error:
 
+            BaseAgent.audit_logger.log_error(
+
+                self.role,
+
+                error
+            )
+
             logger.exception(
-                f"{self.role} unexpected error: {error}"
+                f"{self.role} failed: {error}"
             )
 
             return self.fallback_response(
